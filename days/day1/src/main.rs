@@ -8,7 +8,7 @@ fn main() {
         .lines()
         .map(|input| input.parse::<u32>())
         .filter_map(Result::ok)
-        .combinations(2)
+        .combinations(2) // Change to `3` for part 2
         .filter(|combination| combination.iter().sum::<u32>() == 2020)
         .next();
 
