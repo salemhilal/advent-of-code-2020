@@ -13,6 +13,12 @@ impl<'a> Password<'a> {
         let count = self.password.matches(self.c).count() as u32;
         return count <= self.high && count >= self.low;
     }
+
+    fn is_valid_part_2(&self) -> bool {
+        let first = self.password.chars().nth((self.low - 1) as usize).unwrap() == self.c;
+        let second = self.password.chars().nth((self.high - 1) as usize).unwrap() == self.c;
+        return first ^ second;
+    }
 }
 
 impl<'a> From<&'a str> for Password<'a> {
@@ -32,7 +38,9 @@ impl<'a> From<&'a str> for Password<'a> {
         let rule_range: Vec<_> = rule_pieces[0].split("-").collect();
         assert_eq!(rule_range.len(), 2);
 
-        let rule_low = rule_range[0].parse::<u32>().expect("Couldn't parse ruleLow");
+        let rule_low = rule_range[0]
+            .parse::<u32>()
+            .expect("Couldn't parse ruleLow");
         let rule_high = rule_range[1]
             .parse::<u32>()
             .expect("Couldn't parse ruleHigh");
@@ -51,7 +59,7 @@ fn main() {
     let result = input
         .lines()
         .map(Password::from)
-        .filter(|password| password.is_valid())
+        .filter(|password| password.is_valid()) // change to is_valid_part_2 for part 2
         .collect::<Vec<_>>()
         .len();
 
